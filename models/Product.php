@@ -14,4 +14,9 @@ class Product extends ActiveRecord
     {
         return $this->hasOne(Category::className(), ['categoryId' => 'id']);
     }
+
+    public function getProductImages()
+    {
+        return $this->hasMany(ProductImage::className(), ['productId' => 'id']);
+    }
 }
