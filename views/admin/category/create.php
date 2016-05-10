@@ -1,15 +1,21 @@
 <?php
+
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
-
-$form = ActiveForm::begin() ?>
 
 
-<?= $form->field($category, 'name') ?>
-<div class="form-group">
-    <div class="col-lg-offset-1 col-lg-11">
-        <?= Html::submitButton('Create', ['class' => 'btn btn-primary']) ?>
-    </div>
+/* @var $this yii\web\View */
+/* @var $model app\models\Category */
+
+$this->title = 'Создать категорию';
+$this->params['breadcrumbs'][] = ['label' => 'Categories', 'url' => ['index']];
+$this->params['breadcrumbs'][] = $this->title;
+?>
+<div class="category-create">
+
+    <h1><?= Html::encode($this->title) ?></h1>
+
+    <?= $this->render('_form', [
+        'model' => $model,
+    ]) ?>
+
 </div>
-<?php ActiveForm::end() ?>
-
