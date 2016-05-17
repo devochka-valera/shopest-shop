@@ -8,16 +8,29 @@ class Register extends Model
 {
     public $email;
     public $password;
+    public $firstName;
+    public $lastName;
+    public $address;
 
     public function rules()
     {
         return [
-            [['email', 'password'], 'required'],
+            [['email', 'password', 'firstName', 'lastName', 'address'], 'required'],
             ['email', 'email'],
-            ['email', 'unique', 'targetClass' => 'app\models\User'],
-            ['password', 'string', 'min' => 2, 'max' => 12]
         ];
     }
+    public function attributeLabels()
+    {
+        return [
+            'firstName' => 'First name',
+            'lastName' => 'Last name',
+            'address' => 'Address',
+            'password' => 'Password',
+            'email' => 'Email'
+
+        ];
+    }
+
 
     /**
      * @return mixed
@@ -27,7 +40,11 @@ class Register extends Model
         $user = new User();
         $user->email = $this->email;
         $user->setPassword($this->password);
+        $user->firstName = $this->firstName;
+        $user->lastName = $this->lastName;
+        $user->address = $this->address;
         return $user->save(); //вернет true или false
+
     }
 
 }

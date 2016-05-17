@@ -8,6 +8,7 @@
 namespace app\models;
 
 use Yii;
+use yii\base\Model;
 
 class Cart
 {
@@ -72,4 +73,42 @@ class Cart
 
     }
 
+    public function order()
+    {
+        $order = new Order();
+        $order->userId = Yii::$app->user->getId(); // получайет id юзера
+        $order->creationDate = date('Y-m-d H:i');
+        $order->modifiedDate = date('Y-m-d H:i');
+        $order->statusId = OrderStatus::find()->one()->id; // вернет первый id из таблицы orderStatus
+        $order->save(); // сохраняет в базе строчку order (новый заказ)
+
+        foreach ($this->products as $product) {
+            $orderLine = new OrderToProduct();
+            $orderLine->productId = $product->id;
+            $orderLine->qty = 1; // надо поправить!!!!!!!!!!!!!!!!!!!!!!! мы купили
+            $orderLine->orderId = $order->id;
+            $orderLine->save(); // сохраняет в базе новую строчку orderToProduct
+
+            $productToUpdate = Product::findOne(['id' => $orderLine->productId]); // нашли продукт по id
+            $productToUpdate->qty = $productToUpdate->qty - $orderLine->qty; // уменьшили количество товара на складе
+            $productToUpdate->save();
+        }
+
+        $this->payment();
+        $this->clear();
+    }
+
+    public function sum()
+    {
+        $sum = 0;
+        foreach ($this->products as $product) {
+            $sum = $sum + $product->price;
+        }
+        return $sum;
+    }
+
+    public function payment()
+    {
+        // сделали оплату
+    }
 }

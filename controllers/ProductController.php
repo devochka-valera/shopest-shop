@@ -15,13 +15,15 @@ use yii\web\NotFoundHttpException;
 
 class ProductController extends Controller
 {
+
+
     public function actionIndex()
     {
         $products = Product::find()->all();
         $categories = Category::find()->all();
         return $this->render('index', [
             'products' => $products,
-            'categories'=>$categories
+            'categories' => $categories
         ]);
     }
 

@@ -10,6 +10,7 @@ namespace app\controllers;
 
 
 use app\models\Cart;
+use Yii;
 use yii\web\Controller;
 
 class CartController extends Controller
@@ -38,5 +39,16 @@ class CartController extends Controller
         Cart::instance()->clear(); //очистить корзину
         return $this->actionDetail();
     }
+
+    public function actionCheckout()
+    {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(['site/login']);
+        }
+        Cart::instance()->order(); // instance возвращает объект класса корзина. у корзины вызываем метод
+
+        return $this->render('checkout');
+    }
+
 
 }
